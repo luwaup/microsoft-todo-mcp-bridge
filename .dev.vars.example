@@ -1,0 +1,4 @@
+MS_CLIENT_ID=replace-with-application-client-id
+MS_CLIENT_SECRET=replace-with-application-client-secret
+# Optional: deployment URL, e.g. https://personal-todo-bridge.your-subdomain.workers.dev
+# PUBLIC_BASE_URL=http://localhost:8787

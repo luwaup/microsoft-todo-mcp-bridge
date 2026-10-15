@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "lib": ["ES2022", "DOM"],
+    "outDir": ".test-dist"
+  },
+  "include": ["src/**/*.ts"]
+}

@@ -1,0 +1,40 @@
+# Dependencies and generated output
+node_modules/
+dist/
+.test-dist/
+coverage/
+artifacts/
+*.tsbuildinfo
+
+# Credentials and local/cloud runtime state
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+.wrangler/
+.personal/
+.private/
+.codex/
+.agents/
+*.pem
+*.key
+*.pfx
+*.p12
+*.log
+*.har
+
+# Private review evidence and historical packages
+REVIEW*
+verification.txt
+MANIFEST.sha256
+*deployment-status*
+analysis-artifacts/
+*.zip
+*.png
+*.jpg
+*.jpeg
+*.pdf
+.DS_Store
+Thumbs.db

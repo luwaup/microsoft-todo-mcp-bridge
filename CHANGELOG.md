@@ -1,5 +1,11 @@
 # Changelog
 
+## Distribution update — 2026-10-16
+
+- Reorganized the English and Chinese homepages around AI-guided self-hosting, with direct setup/task skill links and copyable install prompts.
+- Added a standalone skills archive and checksum alongside the existing v0.2.0 assets. The skills come from the unchanged v0.2.0 tag; existing source and plugin archives remain unchanged.
+- Added explicit skill-directory installation links and clarified the difference between GitHub distribution and public plugin-directory approval.
+
 ## 0.2.0 — 2026-10-16
 
 AI-guided self-hosting and client setup pre-release.

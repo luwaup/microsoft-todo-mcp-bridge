@@ -8,7 +8,20 @@
 
 > 请从 https://github.com/luwaup/microsoft-todo-mcp-bridge 的 v0.2.0 版本读取并使用 plugins/personal-todo/skills/personal-todo-setup/SKILL.md，帮我部署到我自己的 Cloudflare，再配置本客户端的 MCP 连接。先检查环境，复用已有的本项目配置。微软登录、授权和密钥输入请引导我在对应网页或自己的终端完成，不要让我在聊天里发送密码或密钥。完成后读取 To Do 清单验证连接。
 
-支持 skill 安装器的客户端，也可从该仓库的 `plugins/personal-todo/skills/personal-todo-setup` 安装独立技能。日常任务管理技能是同级 `manage-personal-todo`。安装后开启新会话，再说“帮我连接微软 To Do”。
+## 安装独立 skills
+
+支持 skill 安装器的客户端，可让 AI 安装以下两个技能目录：
+
+- [personal-todo-setup：安装和连接](https://github.com/luwaup/microsoft-todo-mcp-bridge/tree/v0.2.0/plugins/personal-todo/skills/personal-todo-setup)
+- [manage-personal-todo：日常管理任务](https://github.com/luwaup/microsoft-todo-mcp-bridge/tree/v0.2.0/plugins/personal-todo/skills/manage-personal-todo)
+
+可以直接说：
+
+> 请使用本客户端的 skill 安装器，从 luwaup/microsoft-todo-mcp-bridge 仓库的 v0.2.0 版本安装 plugins/personal-todo/skills/personal-todo-setup 和 plugins/personal-todo/skills/manage-personal-todo 两个技能。不要修改我已有的同名技能，发现冲突时先说明。
+
+也可 [下载独立 skills ZIP](https://github.com/luwaup/microsoft-todo-mcp-bridge/releases/download/v0.2.0/personal-todo-skills-v0.2.0.zip)（[SHA-256](https://github.com/luwaup/microsoft-todo-mcp-bridge/releases/download/v0.2.0/personal-todo-skills-v0.2.0.zip.sha256)）。解压后按客户端说明安装两个技能文件夹；每个文件夹内都有 `SKILL.md`。压缩包里的许可证、提交标识和校验清单用于溯源，不需要作为技能安装。
+
+`SKILL.md` 文件链接用于直接阅读；需要仓库目录的安装器，请使用上面的技能目录链接。安装后按客户端要求开启新会话，再说“帮我连接微软 To Do”。安装技能提供工作流，实际部署还需要后面的服务源码和本地工具。
 
 ## Codex 插件方式
 

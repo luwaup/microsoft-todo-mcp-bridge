@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {allowedPath,inspectPublicFile} from '../scripts/check-public.mjs';
-import {sourceZip,verifySourceZip} from '../scripts/release-pack.mjs';
+import {sourceZip,verifySourceZip,standaloneSkillFiles} from '../scripts/release-pack.mjs';
 
 test('public release excludes private evidence, runtime state and symlink paths',()=>{
   for(const path of ['.personal/wrangler.jsonc','.dev.vars','.env','REVIEW.zh-CN.md','verification.txt','proof.png','node_modules/a.js','src/../../secret.ts','src/a.ts/secret']) assert.equal(allowedPath(path),false,path);
@@ -40,4 +40,16 @@ test('release ZIP verification rejects tampering and unexpected inventory',()=>{
   assert.throws(()=>verifySourceZip(altered,expected),/verification failed/);
   assert.throws(()=>verifySourceZip(zip,new Map()),/inventory mismatch/);
   assert.throws(()=>verifySourceZip(zip,new Map([['source/other.md',Buffer.from('Public source')]])),/Unexpected/);
+});
+
+test('standalone skills archive contains installable skill roots and omits unrelated files',()=>{
+  const entries=[
+    {path:'plugins/personal-todo/skills/personal-todo-setup/SKILL.md',data:Buffer.from('setup instructions')},
+    {path:'plugins/personal-todo/skills/manage-personal-todo/SKILL.md',data:Buffer.from('task instructions')},
+    {path:'plugins/personal-todo/plugin.json',data:Buffer.from('{}')},
+    {path:'.personal/wrangler.json',data:Buffer.from('private configuration')},
+  ];
+  const files=standaloneSkillFiles(entries);
+  assert.deepEqual(files.map(file=>file.path),['personal-todo-setup/SKILL.md','manage-personal-todo/SKILL.md']);
+  assert.equal(verifySourceZip(sourceZip(files),new Map(files.map(file=>[file.path,file.data]))),2);
 });

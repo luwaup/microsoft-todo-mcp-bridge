@@ -53,6 +53,11 @@ export function verifySourceZip(zip,expected) {
   return count;
 }
 
+export function standaloneSkillFiles(entries) {
+  const prefix='plugins/personal-todo/skills/';
+  return entries.filter(entry=>entry.path.startsWith(prefix)).map(entry=>({path:entry.path.slice(prefix.length),data:entry.data}));
+}
+
 export function packRelease(ref='HEAD') {
   if(!/^(?:HEAD|v\d+\.\d+\.\d+|[a-f0-9]{40})$/.test(ref)) throw new Error('Use HEAD, a release tag, or a full commit SHA.');
   if(git(['status','--porcelain']).length) throw new Error('Release packaging requires a clean Git checkout.');
@@ -82,6 +87,18 @@ export function packRelease(ref='HEAD') {
     writeFileSync(pluginOutput+'.sha256',`${sha256(readFileSync(pluginOutput))}  ${pluginOutput.split('/').at(-1)}\n`);
     console.log(`Verified ${pluginCount} plugin ZIP entries against the same commit.`);
     console.log(pluginOutput);
+  }
+  const skills=standaloneSkillFiles(entries);
+  if(skills.length) {
+    skills.push({path:'LICENSE',data:entries.find(entry=>entry.path==='LICENSE').data});
+    skills.push({path:'SOURCE_COMMIT',data:Buffer.from(commit+'\n')});
+    skills.push({path:'MANIFEST.sha256',data:Buffer.from(skills.map(file=>`${sha256(file.data)}  ${file.path}`).join('\n')+'\n')});
+    const skillsOutput=`artifacts/personal-todo-skills-v${version}.zip`;
+    writeFileSync(skillsOutput,sourceZip(skills));
+    const skillsCount=verifySourceZip(readFileSync(skillsOutput),new Map(skills.map(file=>[file.path,file.data])));
+    writeFileSync(skillsOutput+'.sha256',`${sha256(readFileSync(skillsOutput))}  ${skillsOutput.split('/').at(-1)}\n`);
+    console.log(`Verified ${skillsCount} standalone skills ZIP entries against the same commit.`);
+    console.log(skillsOutput);
   }
   return output;
 }

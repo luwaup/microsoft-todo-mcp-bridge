@@ -1,16 +1,39 @@
-# Microsoft To Do MCP Bridge
+# Microsoft To Do MCP + AI Skills
 
 [中文说明](README.zh-CN.md) · [Security](SECURITY.md) · [Data handling](PRIVACY.md)
 
-A self-hosted remote MCP server for **personal Microsoft To Do accounts**. Connect an OAuth-capable client such as ChatGPT to read lists, create tasks, change due dates and mark tasks complete.
+**Give Codex the setup skill and let your AI guide deployment of your own Microsoft To Do connection.**
+
+This project includes a setup skill, a task-management skill and an OAuth MCP server for **personal Microsoft accounts**. Your AI helps check the environment, deploy to your own Cloudflare account and configure the MCP client. You complete sign-in, application registration confirmation, consent and secret entry in your own browser or terminal. Once connected, ask the AI to read lists, create tasks, change due dates and mark tasks complete.
+
+[Installation guide（中文）](INSTALL.zh-CN.md) · [Setup skill](https://github.com/luwaup/microsoft-todo-mcp-bridge/blob/v0.2.0/plugins/personal-todo/skills/personal-todo-setup/SKILL.md) · [Download skills](https://github.com/luwaup/microsoft-todo-mcp-bridge/releases/download/v0.2.0/personal-todo-skills-v0.2.0.zip) · [Release](https://github.com/luwaup/microsoft-todo-mcp-bridge/releases/tag/v0.2.0)
 
 This is an independent community project, not an official Microsoft, OpenAI or Cloudflare integration. **v0.2.0 is a pre-release for individual deployments**, not a reviewed multi-user hosting service.
 
 ## Let your AI client guide installation
 
-The repository now includes a Codex plugin marketplace and standalone setup/task skills. In a local client with terminal access, ask the AI to use `plugins/personal-todo/skills/personal-todo-setup/SKILL.md` from this repository at `v0.2.0`, deploy into your own Cloudflare account, configure MCP and verify a To Do read. Sign in, consent and enter secrets directly in your own browser/terminal.
+Paste this into Codex or another skills-capable AI client with local terminal access:
+
+> Install and use this setup skill: https://github.com/luwaup/microsoft-todo-mcp-bridge/blob/v0.2.0/plugins/personal-todo/skills/personal-todo-setup/SKILL.md . Deploy to my own Cloudflare account, configure this client's MCP connection and verify it by reading my To Do lists. Check the environment and reuse existing project configuration. Guide me to complete sign-in, application registration confirmation, consent and secret entry in my own browser or terminal. Do not ask me to send passwords or secrets in chat.
 
 See [AI-guided installation](INSTALL.zh-CN.md) for the copyable prompt, plugin source and resumable commands. No maintainer endpoint, credentials or preconfigured MCP connection are bundled. Skills do not grant a plain chat environment local deployment tools.
+
+## Skills and plugin distribution
+
+| Component | Purpose | Get it |
+| --- | --- | --- |
+| `personal-todo-setup` | Prepare deployment, guide authorization, register MCP and verify access | [Skill](plugins/personal-todo/skills/personal-todo-setup/SKILL.md) |
+| `manage-personal-todo` | Resolve task targets and manage requested changes | [Skill](plugins/personal-todo/skills/manage-personal-todo/SKILL.md) |
+| Standalone skills | Both skills for clients that support their installation | [Skills ZIP](https://github.com/luwaup/microsoft-todo-mcp-bridge/releases/download/v0.2.0/personal-todo-skills-v0.2.0.zip) |
+| Codex plugin | Both skills and an onboarding entry point | [Plugin ZIP](https://github.com/luwaup/microsoft-todo-mcp-bridge/releases/download/v0.2.0/personal-todo-plugin-v0.2.0.zip) |
+
+Add the repository plugin source in supported Codex clients:
+
+```bash
+codex plugin marketplace add luwaup/microsoft-todo-mcp-bridge --ref v0.2.0
+```
+
+Then install **personal-todo** from the **Personal To Do Bridge** source in a supported desktop plugin directory and run setup. Availability depends on the client version. This is a GitHub skills/repository-plugin release, not an approved listing in the OpenAI public plugin directory. A user-specific MCP URL is generated after deployment.
 
 ## Deploy to your own account
 
@@ -97,10 +120,10 @@ MCP clients and Microsoft still process data under their own policies. The Cloud
 
 ## Validation and limits
 
-- TypeScript checks, 19 protocol/unit tests and a complete local Worker OAuth scenario passed. OAuth integration tests use mocked Microsoft responses, including refresh and two-account isolation.
+- v0.2.0 passed TypeScript checks, 29 unit/protocol/release/setup checks, a build and a local Worker OAuth scenario. Setup tests simulate Wrangler; OAuth integration tests use mocked Microsoft responses, including refresh and two-account isolation. Both skills passed format validation.
 - A personal live deployment completed ChatGPT CIMD authorization and discovered all 12 tools. Creating a test list/task, changing its title and completing it were independently confirmed in the Microsoft To Do web UI.
 - The ChatGPT test reply had a rendering failure. Actual task changes were confirmed separately; raw reply/tool-result transcripts are not published. If a client reply fails, read back before retrying a write.
-- Long-running real refresh, all remaining live tools, two real-account isolation and the deployment-button onboarding are not fully verified. No independent penetration test has been performed.
+- Fresh-user skill installation, real Codex OAuth, all other client installations, long-running real refresh, all remaining live tools, two real-account isolation and the deployment-button onboarding are not fully verified. No independent penetration test has been performed.
 - There are no transactional bulk updates or automatic ETag conflict resolution. Re-read before editing tasks that other devices may change.
 
 ## Development and release hygiene
@@ -109,7 +132,7 @@ MCP clients and Microsoft still process data under their own policies. The Cloud
 npm run check          # Typecheck, protocol tests, build, Worker OAuth scenario
 npm run security:check # Check tracked public files without printing matched secrets
 npm audit --omit=dev
-npm run release:pack -- v0.1.2
+npm run release:pack -- HEAD
 ```
 
 The packer accepts a **clean Git checkout**, packages committed public files only, adds a SHA-256 manifest, and verifies ZIP contents against Git. It never packages `.personal`, local logs or deployment evidence. The scanner is a defense against accidental publication, not proof that every possible secret is detectable.

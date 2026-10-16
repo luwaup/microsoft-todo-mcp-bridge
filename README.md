@@ -4,7 +4,13 @@
 
 A self-hosted remote MCP server for **personal Microsoft To Do accounts**. Connect an OAuth-capable client such as ChatGPT to read lists, create tasks, change due dates and mark tasks complete.
 
-This is an independent community project, not an official Microsoft, OpenAI or Cloudflare integration. **v0.1.2 is a pre-release for individual deployments**, not a reviewed multi-user hosting service.
+This is an independent community project, not an official Microsoft, OpenAI or Cloudflare integration. **v0.2.0 is a pre-release for individual deployments**, not a reviewed multi-user hosting service.
+
+## Let your AI client guide installation
+
+The repository now includes a Codex plugin marketplace and standalone setup/task skills. In a local client with terminal access, ask the AI to use `plugins/personal-todo/skills/personal-todo-setup/SKILL.md` from this repository at `v0.2.0`, deploy into your own Cloudflare account, configure MCP and verify a To Do read. Sign in, consent and enter secrets directly in your own browser/terminal.
+
+See [AI-guided installation](INSTALL.zh-CN.md) for the copyable prompt, plugin source and resumable commands. No maintainer endpoint, credentials or preconfigured MCP connection are bundled. Skills do not grant a plain chat environment local deployment tools.
 
 ## Deploy to your own account
 
@@ -22,7 +28,7 @@ npm run check
 npm run setup
 ```
 
-The wizard creates a dedicated KV namespace, deploys the Worker, asks for its public URL, and stores the application's client ID and secret using Wrangler's secret prompt. Cloudflare login or Microsoft registration may require you to complete browser verification.
+`npm run setup` prints staged instructions. Sign in with `npx wrangler login`, then run `npm run setup -- --prepare`. Register the Microsoft app using the printed callback, run `npm run setup -- --configure` in your own terminal for credential entry, and run `npm run client:configure -- --client codex`. Personal settings stay in ignored `.personal/wrangler.json`; reruns reuse that file and leave the public template intact. Other clients can use `--client generic` and import the generated local MCP configuration through their supported settings.
 
 1. Register an Entra application with a neutral name, for example **Personal To Do Bridge**. Microsoft-branded app names and callback hostnames can be rejected.
 2. Choose **Personal Microsoft accounts only**. The server uses the Microsoft `/consumers` authority.

@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.0 — 2026-10-16
+
+AI-guided self-hosting and client setup pre-release.
+
+- Installable repository plugin marketplace, portable/Codex manifests, onboarding skill and task-management skill; standalone skills work with capable local agents.
+- Staged preparation, human credential entry and status checks. Dedicated Worker names and ignored personal configuration avoid publishing settings or overwriting the tracked template.
+- Codex MCP registration refuses to replace another endpoint under the same name; generic MCP configuration is generated locally for other clients.
+- Chinese installation guide with a copyable AI prompt, resumable steps and explicit login/consent boundaries.
+- Offline setup regression tests use a simulated Wrangler; no new real account or cloud resources are used for those tests. Fresh-user onboarding and real Codex OAuth still require live acceptance testing.
+
+This release distributes a self-hosting workflow, not a shared service or a public-directory approval.
+
 ## 0.1.2 — 2026-10-16
 
 Initial public pre-release for individually owned deployments.

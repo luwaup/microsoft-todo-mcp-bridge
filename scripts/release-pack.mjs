@@ -71,6 +71,18 @@ export function packRelease(ref='HEAD') {
   writeFileSync(output+'.sha256',`${sha256(readFileSync(output))}  ${output.split('/').at(-1)}\n`);
   console.log(`Verified ${count} ZIP entries against commit ${commit}.`);
   console.log(output);
+  const pluginEntries=entries.filter(entry=>entry.path.startsWith('plugins/personal-todo/')).map(entry=>({path:entry.path.slice('plugins/personal-todo/'.length),data:entry.data}));
+  if(pluginEntries.length) {
+    pluginEntries.push({path:'LICENSE',data:entries.find(entry=>entry.path==='LICENSE').data});
+    pluginEntries.push({path:'SOURCE_COMMIT',data:Buffer.from(commit+'\n')});
+    pluginEntries.push({path:'MANIFEST.sha256',data:Buffer.from(pluginEntries.map(file=>`${sha256(file.data)}  ${file.path}`).join('\n')+'\n')});
+    const pluginOutput=`artifacts/personal-todo-plugin-v${version}.zip`;
+    writeFileSync(pluginOutput,sourceZip(pluginEntries));
+    const pluginCount=verifySourceZip(readFileSync(pluginOutput),new Map(pluginEntries.map(file=>[file.path,file.data])));
+    writeFileSync(pluginOutput+'.sha256',`${sha256(readFileSync(pluginOutput))}  ${pluginOutput.split('/').at(-1)}\n`);
+    console.log(`Verified ${pluginCount} plugin ZIP entries against the same commit.`);
+    console.log(pluginOutput);
+  }
   return output;
 }
 if(process.argv[1] && resolve(process.argv[1])===fileURLToPath(import.meta.url)) {

@@ -10,7 +10,7 @@ export function authHandler() {
       const oauth=env.OAUTH_PROVIDER!;
       try {
       if(url.pathname==='/') return new Response('Microsoft To Do MCP Bridge is running. Connect an OAuth-enabled MCP client to /mcp.\n',{headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'}});
-      if(url.pathname==='/health') return Response.json({ok:true,service:'microsoft-todo-mcp-bridge',version:'0.1.2',configured:Boolean(env.MS_CLIENT_ID?.trim() && env.MS_CLIENT_SECRET?.trim())},{headers:{'Cache-Control':'no-store'}});
+      if(url.pathname==='/health') return Response.json({ok:true,service:'microsoft-todo-mcp-bridge',version:'0.2.0',configured:Boolean(env.MS_CLIENT_ID?.trim() && env.MS_CLIENT_SECRET?.trim())},{headers:{'Cache-Control':'no-store'}});
       if(url.pathname==='/authorize' && (!env.MS_CLIENT_ID?.trim() || !env.MS_CLIENT_SECRET?.trim())) return new Response('Microsoft application is not configured yet.',{status:503,headers:{'Cache-Control':'no-store'}});
       if(url.pathname==='/authorize' && req.method==='GET') {
         const authReq=await oauth.parseAuthRequest(req);

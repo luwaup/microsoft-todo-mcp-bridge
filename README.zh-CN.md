@@ -4,7 +4,15 @@
 
 部署在自己 Cloudflare 账户的 Microsoft To Do 远程 MCP 服务，支持**个人微软账号**。连接 ChatGPT 等兼容 OAuth 的 MCP 客户端后，可以读取清单、新建任务、修改截止日期和标记完成。
 
-这是独立社区项目，非微软、OpenAI 或 Cloudflare 官方产品。**v0.1.2 为个人部署预览版**，不应直接作为未经审查的公开多用户托管服务。
+这是独立社区项目，非微软、OpenAI 或 Cloudflare 官方产品。**v0.2.0 为个人部署预览版**，不应直接作为未经审查的公开多用户托管服务。
+
+## 让 AI 引导安装
+
+新增 Codex 插件及独立 skills。把下面这段话发给支持本地工具的 AI：
+
+> 请读取 https://github.com/luwaup/microsoft-todo-mcp-bridge 的 v0.2.0 版本中 plugins/personal-todo/skills/personal-todo-setup/SKILL.md，按这个技能帮我部署到自己的 Cloudflare，配置 MCP 并读取 To Do 清单验证。登录、授权及密钥输入由我在对应网页或自己的终端完成。
+
+完整步骤、插件源安装命令、AI 能自动完成的部分和人工登录边界见 **[AI 安装说明](INSTALL.zh-CN.md)**。每个人都用自己的服务，不连接维护者的个人实例。普通聊天读取仓库不能替代本地部署工具。
 
 ## 部署
 
@@ -22,7 +30,7 @@ npm run check
 npm run setup
 ```
 
-向导会登录 Cloudflare、创建专用 KV、部署服务，随后引导配置微软应用。
+`npm run setup` 显示分阶段说明。先在自己的终端完成 `npx wrangler login`，再让 AI 运行 `npm run setup -- --prepare`；注册微软应用后，自己运行 `npm run setup -- --configure` 输入凭据，最后运行 `npm run client:configure -- --client codex` 配置 MCP。各阶段复用 `.personal/wrangler.json`，不修改公开模板。
 
 1. 在 Entra 注册应用，名称建议用 **Personal To Do Bridge**。含 Microsoft 品牌字样的应用名称或回调域名可能被微软拒绝。
 2. 支持账户类型选**仅限个人 Microsoft 账号**。本服务使用 `/consumers` 授权入口。
@@ -56,7 +64,7 @@ https://personal-todo-bridge.your-subdomain.workers.dev/mcp
 - 默认关闭调用日志，避免保留包含授权码的回调地址；不回显微软错误响应正文。
 - 删除需要 `confirm:true` 和客户端确认。多设备并发修改暂不自动解决冲突，应先重新读取。
 
-部署完成后，本地 `wrangler.jsonc` 会包含个人 KV 信息，不应提交。维护自己的 fork 时，可把配置放在已忽略的 `.personal/` 目录，通过 Wrangler 的 `--config` 参数使用。公开仓库和发布包中只保留占位配置，不附带任何人的可访问实例或密钥。
+新版向导将个人 KV 和服务地址写入已忽略的 `.personal/wrangler.json`。手动部署如果修改本地 `wrangler.jsonc`，不要提交该个性化文件。维护自己的 fork 时，可通过 Wrangler 的 `--config` 参数指定 `.personal/` 内的配置。公开仓库和发布包中只保留占位配置，不附带任何人的可访问实例或密钥。
 
 ## 已验证与未验证
 

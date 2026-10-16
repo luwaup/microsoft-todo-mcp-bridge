@@ -1,6 +1,6 @@
 {
   "name": "microsoft-todo-mcp-bridge",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "Self-hosted remote MCP server for Microsoft To Do with delegated Microsoft OAuth",
@@ -8,6 +8,7 @@
     "dev": "wrangler dev --port 8787",
     "deploy": "wrangler deploy",
     "setup": "node scripts/setup.mjs",
+    "client:configure": "node scripts/configure-client.mjs",
     "typecheck": "tsc --noEmit",
     "test": "tsc -p tsconfig.test.json && node --test tests/*.test.mjs",
     "build": "wrangler deploy --dry-run --outdir dist",

@@ -3,7 +3,7 @@ import {readFileSync, lstatSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-const rootFiles=new Set(['.gitignore','.gitattributes','.dev.vars.example','LICENSE','README.md','README.zh-CN.md','SECURITY.md','PRIVACY.md','CHANGELOG.md','package.json','package-lock.json','tsconfig.json','tsconfig.test.json','wrangler.jsonc']);
+const rootFiles=new Set(['.gitignore','.gitattributes','.dev.vars.example','LICENSE','README.md','README.zh-CN.md','INSTALL.zh-CN.md','SECURITY.md','PRIVACY.md','CHANGELOG.md','package.json','package-lock.json','tsconfig.json','tsconfig.test.json','wrangler.jsonc','.agents/plugins/marketplace.json','plugins/personal-todo/plugin.json','plugins/personal-todo/.codex-plugin/plugin.json','plugins/personal-todo/skills/personal-todo-setup/SKILL.md','plugins/personal-todo/skills/manage-personal-todo/SKILL.md']);
 export function allowedPath(path) {
   return rootFiles.has(path) || /^(?:src\/[^/]+\.ts|scripts\/[^/]+\.mjs|tests\/(?:worker\/)?[^/]+\.test\.mjs|\.github\/workflows\/[^/]+\.ya?ml)$/.test(path);
 }

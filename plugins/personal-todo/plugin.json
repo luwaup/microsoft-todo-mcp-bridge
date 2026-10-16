@@ -1,0 +1,16 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "personal-todo",
+  "version": "0.2.0",
+  "description": "AI-guided deployment of a personal Microsoft To Do MCP to your own Cloudflare account, followed by OAuth connection and task workflows.",
+  "repository": "https://github.com/luwaup/microsoft-todo-mcp-bridge",
+  "license": "MIT",
+  "extensions": {"com.openai": {
+    "onboardingSkill": "./skills/personal-todo-setup/SKILL.md",
+    "interface": {
+      "displayName": "Personal To Do Bridge",
+      "shortDescription": "Deploy and connect your own Microsoft To Do bridge",
+      "defaultPrompt": ["Help me deploy my own Microsoft To Do bridge to Cloudflare and connect this client."]
+    }
+  }}
+}
